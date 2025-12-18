@@ -42,6 +42,7 @@ async function initPostgresSchema() {
                 password TEXT,
                 elo INTEGER DEFAULT 800,
                 is_admin BOOLEAN DEFAULT FALSE,
+                is_banned BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         `);
@@ -50,6 +51,12 @@ async function initPostgresSchema() {
         await pgPool.query(`
             ALTER TABLE users 
             ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE
+        `);
+
+        // Add is_banned column if it doesn't exist (migration for existing tables)
+        await pgPool.query(`
+            ALTER TABLE users 
+            ADD COLUMN IF NOT EXISTS is_banned BOOLEAN DEFAULT FALSE
         `);
 
         // Matches table
