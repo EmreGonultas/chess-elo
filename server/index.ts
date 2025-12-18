@@ -9,6 +9,7 @@ import matchRoutes from './match';
 import matchHistoryRoutes from './match-history';
 import friendsRoutes from './friends';
 import adminRoutes from './admin';
+import setupRoutes from './setup';
 import { setupSocketHandlers } from './socket-handlers';
 
 dotenv.config();
@@ -47,6 +48,7 @@ app.use('/api/match', matchRoutes);
 app.use('/api/matches', matchHistoryRoutes);
 app.use('/api/friends', friendsRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/setup', setupRoutes);
 
 // Basic health check
 app.get('/', (req, res) => {
