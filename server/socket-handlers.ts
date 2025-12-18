@@ -513,10 +513,40 @@ async function handleGameEnd(
         // Use JavaScript ISO timestamp for proper parsing
         const timestamp = new Date().toISOString();
 
+
         await run(
-            `INSERT INTO matches (id, white_id, black_id, winner_id, moves, status, created_at)
-             VALUES (?, ?, ?, ?, ?, 'completed', ?)`,
-            [matchId, game.white.userId, game.black.userId, winnerId, matchData, timestamp]
+            `INSERT INTO matches (
+                id, 
+                white_player_id, 
+                black_player_id, 
+                white_player_name,
+                black_player_name,
+                result, 
+                winner_id, 
+                pgn,
+                white_elo_before,
+                black_elo_before,
+                white_elo_after,
+                black_elo_after,
+                casual,
+                created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                matchId,
+                game.white.userId,
+                game.black.userId,
+                game.white.username,
+                game.black.username,
+                winner === 'draw' ? 'draw' : 'win',
+                winnerId,
+                matchData,
+                game.white.elo,
+                game.black.elo,
+                eloChanges.whiteNewRating,
+                eloChanges.blackNewRating,
+                game.casual ? 1 : 0,
+                timestamp
+            ]
         );
 
         // Notify both players

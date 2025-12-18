@@ -27,8 +27,8 @@ router.get('/history', async (req, res) => {
         const matches = await query(`
             SELECT 
                 m.id,
-                m.white_id,
-                m.black_id,
+                m.white_player_id,
+                m.black_player_id,
                 m.winner_id,
                 m.moves,
                 m.status,
@@ -38,16 +38,16 @@ router.get('/history', async (req, res) => {
                 b.username as black_username,
                 b.elo as black_current_elo
             FROM matches m
-            LEFT JOIN users w ON m.white_id = w.id
-            LEFT JOIN users b ON m.black_id = b.id
-            WHERE m.white_id = ? OR m.black_id = ?
+            LEFT JOIN users w ON m.white_player_id = w.id
+            LEFT JOIN users b ON m.black_player_id = b.id
+            WHERE m.white_player_id = ? OR m.black_player_id = ?
             ORDER BY m.created_at DESC
             LIMIT 10
         `, [userId, userId]);
 
         // Format the response
         const formattedMatches = matches.map((match: any) => {
-            const isWhite = match.white_id === userId;
+            const isWhite = match.white_player_id === userId;
             const opponentUsername = isWhite ? match.black_username : match.white_username;
 
             // Try to get ELO and change from stored match data
