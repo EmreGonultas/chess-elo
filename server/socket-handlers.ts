@@ -441,19 +441,20 @@ function createGame(io: Server, player1: Player, player2: Player, timeControl: n
         color: game.white.userId === player2.userId ? 'white' : 'black'
     });
 
-    // Start game after short delay
-    setTimeout(() => {
-        game.start();
-        io.to(player1.socketId).to(player2.socketId).emit('game_start', {
-            gameId: game.id,
-            white: { username: game.white.username, elo: game.white.elo },
-            black: { username: game.black.username, elo: game.black.elo },
-            fen: game.getFEN(),
-            timeControl: game.timeControl,
-            whiteTime: game.whiteTime,
-            blackTime: game.blackTime
-        });
-    }, 2000);
+
+    // Start game immediately BEFORE emitting game_start
+    game.start();
+
+    // Emit game_start to both players
+    io.to(player1.socketId).to(player2.socketId).emit('game_start', {
+        gameId: game.id,
+        white: { username: game.white.username, elo: game.white.elo },
+        black: { username: game.black.username, elo: game.black.elo },
+        fen: game.getFEN(),
+        timeControl: game.timeControl,
+        whiteTime: game.whiteTime,
+        blackTime: game.blackTime
+    });
 
     console.log(`🎮 Created game ${game.id}: ${game.white.username} vs ${game.black.username}`);
 }
