@@ -96,12 +96,15 @@ export class GameRoom {
         const now = new Date();
         const elapsed = now.getTime() - this.lastMoveTime.getTime();
 
-        // Deduct time from the player who just moved (previous turn)
-        const previousTurn = this.chess.turn() === 'w' ? 'b' : 'w';
-        if (previousTurn === 'w') {
+        // CRITICAL FIX: Deduct time from the player who is CURRENTLY moving
+        // This is called BEFORE the move is made, so chess.turn() is the player who's about to move
+        const currentTurn = this.chess.turn();
+        if (currentTurn === 'w') {
             this.whiteTime = Math.max(0, this.whiteTime - elapsed);
+            console.log(`⏱️  White used ${elapsed}ms, remaining: ${this.whiteTime}ms`);
         } else {
             this.blackTime = Math.max(0, this.blackTime - elapsed);
+            console.log(`⏱️  Black used ${elapsed}ms, remaining: ${this.blackTime}ms`);
         }
 
         this.lastMoveTime = now;
