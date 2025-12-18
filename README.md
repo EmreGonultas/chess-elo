@@ -24,7 +24,7 @@ A full-stack, real-time multiplayer chess application with ELO rating system, fr
 ### Core Gameplay
 - **Real-time Multiplayer Chess**: Play against other players in real-time with WebSocket connections
 - **AI Opponent**: Practice against an AI with multiple difficulty levels (Easy, Medium, Hard, Master)
-- **Time Controls**: Choose between 5-minute and 10-minute games
+- **Time Controls**: Ranked games with 5-minute or 10-minute options, unlimited time for casual games
 - **Move Validation**: Full chess rules implementation including castling, en passant, and promotion
 
 ### Social Features
@@ -34,23 +34,19 @@ A full-stack, real-time multiplayer chess application with ELO rating system, fr
 
 ### Rating System
 - **ELO Rating**: Standard chess ELO calculation (K-factor 32)
+- **Starting ELO**: All new players begin at 800 ELO
 - **Rank Tiers**: 
-  - Novice (< 1000)
-  - Beginner (1000-1199)
-  - Intermediate (1200-1399)
-  - Advanced (1400-1599)
-  - Expert (1600-1799)
-  - Master (1800-1999)
-  - Grandmaster (2000-2199)
-  - Elite (2200-2399)
-  - Champion (2400-2599)
-  - Legend (2600-2799)
-  - Paragon (2800+)
+  - **Pulse** (< 1000) - Entry level, blue badge
+  - **Rift** (1000-1499) - Intermediate, green badge
+  - **Eclipse** (1500-1999) - Advanced, purple badge with glow
+  - **Ascendant** (2000-2499) - Expert, red badge with strong glow
+  - **Paragon** (2500+) - Elite, animated RGB rainbow effect
 - **Leaderboard**: Global ranking of top players
 
 ### Matchmaking
-- **Ranked Queue**: Automatic matchmaking with similar-ELO players
-- **Casual Games**: Play without affecting your rating
+- **Ranked Queue**: Automatic matchmaking with similar time control preference
+- **Time Controls**: Choose between 5-minute or 10-minute games
+- **Casual Games**: Play without affecting your rating (friend challenges)
 - **Auto-resign on Disconnect**: Games are automatically resolved if a player leaves
 
 ### Admin Panel
