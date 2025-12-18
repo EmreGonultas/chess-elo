@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSocket } from '../context/SocketContext';
 import { MultiplayerChessBoard } from '../components/MultiplayerChessBoard';
@@ -79,6 +79,9 @@ export default function MultiplayerGamePage() {
     const [blackTime, setBlackTime] = useState(gameState?.timeControl || 0);
     const [timeControl, setTimeControl] = useState(gameState?.timeControl || 0);
 
+    // Track last turn change to prevent timer drift
+    const lastTurnChangeRef = useRef<number>(Date.now());
+
     // Removed aggressive redirect check - if user navigates here, trust the navigation
     // If gameState is missing, socket listeners will handle it
 
@@ -116,10 +119,13 @@ export default function MultiplayerGamePage() {
             setFen(data.fen);
             setTurn(data.turn);
 
-            // Update timer from server
+            // CRITICAL: Update timer from server IMMEDIATELY to prevent desync
+            // This ensures the frozen timer shows the correct value
             if (data.whiteTime !== undefined && data.blackTime !== undefined) {
                 setWhiteTime(data.whiteTime);
                 setBlackTime(data.blackTime);
+                // Reset timer sync timestamp
+                lastTurnChangeRef.current = Date.now();
             }
         });
 
