@@ -67,7 +67,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Check if user is banned
-        if (user.is_banned === 1) {
+        if (user.is_banned) {
             return res.status(403).json({ error: 'This account has been banned' });
         }
 

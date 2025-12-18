@@ -122,7 +122,7 @@ export default function AdminPage() {
                                     </td>
                                     <td className="px-6 py-4 text-slate-300">{u.elo}</td>
                                     <td className="px-6 py-4">
-                                        {u.is_banned === 1 ? (
+                                        {u.is_banned ? (
                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30">
                                                 🚫 Banned
                                             </span>
@@ -133,7 +133,7 @@ export default function AdminPage() {
                                         )}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {u.is_admin === 1 ? (
+                                        {u.is_admin ? (
                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">
                                                 👑 Admin
                                             </span>
@@ -145,9 +145,9 @@ export default function AdminPage() {
                                         {new Date(u.created_at).toLocaleDateString()}
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                        {u.is_admin !== 1 && (
+                                        {!u.is_admin && (
                                             <>
-                                                {u.is_banned === 1 ? (
+                                                {u.is_banned ? (
                                                     <button
                                                         onClick={() => handleUnban(u.username)}
                                                         className="px-3 py-1 rounded bg-green-600 hover:bg-green-700 text-sm font-medium transition"
@@ -172,7 +172,7 @@ export default function AdminPage() {
                 </div>
 
                 <div className="mt-6 text-sm text-slate-400">
-                    Total users: {users.length} | Active: {users.filter(u => u.is_banned === 0).length} | Banned: {users.filter(u => u.is_banned === 1).length}
+                    Total users: {users.length} | Active: {users.filter(u => !u.is_banned).length} | Banned: {users.filter(u => u.is_banned).length}
                 </div>
             </div>
         </div>
