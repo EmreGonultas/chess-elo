@@ -43,7 +43,7 @@ router.post('/signup', async (req, res) => {
         // Issue Token
         const token = jwt.sign({ id, username }, JWT_SECRET, { expiresIn: '24h' });
 
-        res.status(201).json({ token, user: { id, username, elo: 800 } });
+        res.status(201).json({ token, user: { id, username, elo: 800, isAdmin: false } });
 
     } catch (error) {
         console.error('Signup error:', error);
@@ -80,7 +80,7 @@ router.post('/login', async (req, res) => {
         // Issue Token
         const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
 
-        res.json({ token, user: { id: user.id, username: user.username, elo: user.elo } });
+        res.json({ token, user: { id: user.id, username: user.username, elo: user.elo, isAdmin: user.is_admin || false } });
 
     } catch (error) {
         console.error('Login error:', error);
@@ -96,10 +96,10 @@ router.get('/me', async (req, res) => {
     const token = authHeader.split(' ')[1];
     try {
         const payload = jwt.verify(token, JWT_SECRET) as any;
-        const user = await get('SELECT id, username, elo FROM users WHERE id = ?', [payload.id]);
+        const user = await get('SELECT id, username, elo, is_admin FROM users WHERE id = ?', [payload.id]) as any;
 
         if (!user) return res.status(404).json({ error: 'User not found' });
-        res.json(user);
+        res.json({ id: user.id, username: user.username, elo: user.elo, isAdmin: user.is_admin || false });
     } catch (e) {
         res.status(401).json({ error: 'Invalid token' });
     }
