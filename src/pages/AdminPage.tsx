@@ -19,6 +19,8 @@ export default function AdminPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const [editingUser, setEditingUser] = useState<string | null>(null);
+    const [editElo, setEditElo] = useState<number>(0);
 
     useEffect(() => {
         fetchUsers();
@@ -75,6 +77,31 @@ export default function AdminPage() {
         }
     };
 
+    const startEditElo = (username: string, currentElo: number) => {
+        setEditingUser(username);
+        setEditElo(currentElo);
+    };
+
+    const cancelEditElo = () => {
+        setEditingUser(null);
+        setEditElo(0);
+    };
+
+    const saveElo = async (username: string) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(
+                `${API_URL}/api/admin/update-elo`,
+                { username, newElo: editElo },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setEditingUser(null);
+            fetchUsers();
+        } catch (err: any) {
+            alert(err.response?.data?.error || 'Failed to update ELO');
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
@@ -120,7 +147,43 @@ export default function AdminPage() {
                                             )}
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-slate-300">{u.elo}</td>
+                                    <td className="px-6 py-4 text-slate-300">
+                                        {editingUser === u.username ? (
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="number"
+                                                    value={editElo}
+                                                    onChange={(e) => setEditElo(parseInt(e.target.value) || 0)}
+                                                    className="w-24 px-2 py-1 bg-slate-800 border border-slate-600 rounded text-white"
+                                                    min="0"
+                                                    max="5000"
+                                                />
+                                                <button
+                                                    onClick={() => saveElo(u.username)}
+                                                    className="px-2 py-1 bg-green-600 hover:bg-green-700 rounded text-xs"
+                                                >
+                                                    ✓
+                                                </button>
+                                                <button
+                                                    onClick={cancelEditElo}
+                                                    className="px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-xs"
+                                                >
+                                                    ✗
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center gap-2">
+                                                {u.elo}
+                                                <button
+                                                    onClick={() => startEditElo(u.username, u.elo)}
+                                                    className="text-blue-400 hover:text-blue-300 text-sm"
+                                                    title="Edit ELO"
+                                                >
+                                                    ✏️
+                                                </button>
+                                            </div>
+                                        )}
+                                    </td>
                                     <td className="px-6 py-4">
                                         {u.is_banned ? (
                                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/20 text-red-300 border border-red-500/30">

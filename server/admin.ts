@@ -1,6 +1,7 @@
 import express from 'express';
-import { query, run } from './db';
+import { query, run, get } from './db';
 import { authenticateToken } from './auth';
+import { ioInstance, getUserSocketId } from './socket-handlers';
 
 const router = express.Router();
 
@@ -30,7 +31,22 @@ router.post('/ban', authenticateToken, requireAdmin, async (req, res) => {
             return res.status(400).json({ error: 'Username required' });
         }
 
+        // Get user ID first
+        const user = await get('SELECT id FROM users WHERE username = ?', [username]) as any;
+
+        // Ban the user
         await run('UPDATE users SET is_banned = ? WHERE username = ?', [true, username]);
+
+        // If user is online, emit ban event to force logout
+        if (user && ioInstance) {
+            const socketId = getUserSocketId(user.id);
+            if (socketId) {
+                ioInstance.to(socketId).emit('account_banned', {
+                    message: 'Your account has been banned by an administrator.'
+                });
+                console.log(`🚫 Sent ban notification to ${username}`);
+            }
+        }
 
         res.json({ success: true, message: `${username} has been banned` });
     } catch (error) {
@@ -54,6 +70,37 @@ router.post('/unban', authenticateToken, requireAdmin, async (req, res) => {
     } catch (error) {
         console.error('Unban error:', error);
         res.status(500).json({ error: 'Failed to unban user' });
+    }
+});
+
+// Update user ELO
+router.post('/update-elo', authenticateToken, requireAdmin, async (req, res) => {
+    try {
+        const { username, newElo } = req.body;
+
+        if (!username || newElo === undefined) {
+            return res.status(400).json({ error: 'Username and newElo required' });
+        }
+
+        // Validate ELO range
+        const eloNum = parseInt(newElo);
+        if (isNaN(eloNum) || eloNum < 0 || eloNum > 5000) {
+            return res.status(400).json({ error: 'ELO must be between 0 and 5000' });
+        }
+
+        // Check if user exists
+        const user = await get('SELECT id FROM users WHERE username = ?', [username]);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update ELO
+        await run('UPDATE users SET elo = ? WHERE username = ?', [eloNum, username]);
+
+        res.json({ success: true, message: `Updated ${username}'s ELO to ${eloNum}` });
+    } catch (error) {
+        console.error('Update ELO error:', error);
+        res.status(500).json({ error: 'Failed to update ELO' });
     }
 });
 

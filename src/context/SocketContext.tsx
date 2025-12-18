@@ -31,7 +31,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         challengerName: string;
         timeControl: number;
     } | null>(null);
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, logout } = useAuth();
 
     useEffect(() => {
         if (isAuthenticated && user) {
@@ -85,6 +85,14 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
                 }
 
                 // Note: SocialPage will also handle the modal if user is on that page
+            });
+
+            // Handle account ban - force logout immediately
+            newSocket.on('account_banned', (data: { message: string }) => {
+                console.log('🚫 Account banned:', data.message);
+                alert(data.message);
+                logout();
+                window.location.href = '/';
             });
 
             // Listen for game_start to navigate user who accepted from toast
