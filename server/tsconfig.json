@@ -19,6 +19,10 @@
   "exclude": [
     "node_modules",
     "*.js",
-    "dist"
+    "dist",
+    "test_*.ts",
+    "setup_*.js",
+    "change_*.js",
+    "cleanup_*.js"
   ]
 }
