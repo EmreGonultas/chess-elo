@@ -437,8 +437,6 @@ This project is a personal portfolio piece created to demonstrate full-stack dev
 
 This code is provided as-is for educational and learning purposes only. If you wish to use this project commercially, please contact the author.
 
-© 2024 Emre Gönüldaş. All rights reserved for commercial use.
-
 ---
 
 ## 🙏 Acknowledgments
@@ -457,4 +455,4 @@ For questions or issues:
 2. Review the code comments
 3. Contact the author
 
-**Last Updated:** December 2024
+**Last Updated:** December 2025
