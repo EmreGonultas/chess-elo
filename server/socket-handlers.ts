@@ -289,6 +289,8 @@ export function setupSocketHandlers(io: Server) {
                 // Get current time state
                 const timeState = game.getTimeState();
 
+                console.log(`⏱️  Time state after move: White=${timeState.whiteTime}ms, Black=${timeState.blackTime}ms, Turn=${result.turn}`);
+
                 // Broadcast move to both players with time update
                 io.to(game.white.socketId).to(game.black.socketId).emit('move_made', {
                     from,
