@@ -41,8 +41,15 @@ async function initPostgresSchema() {
                 username TEXT UNIQUE,
                 password TEXT,
                 elo INTEGER DEFAULT 800,
+                is_admin BOOLEAN DEFAULT FALSE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        `);
+
+        // Add is_admin column if it doesn't exist (migration for existing tables)
+        await pgPool.query(`
+            ALTER TABLE users 
+            ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE
         `);
 
         // Matches table
