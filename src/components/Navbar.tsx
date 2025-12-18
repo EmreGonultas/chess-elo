@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 export default function Navbar() {
     const location = useLocation();
+    const { user } = useAuth();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const isActive = (path: string) => location.pathname === path;
@@ -16,6 +17,11 @@ export default function Navbar() {
         { path: '/practice', label: 'PRACTICE' },
         { path: '/social', label: 'SOCIAL' },
     ];
+
+    // Add admin link for admin users
+    if (user?.isAdmin) {
+        navLinks.push({ path: '/admin', label: 'ADMIN' });
+    }
 
     return (
         <nav className="w-full bg-slate-900 border-b border-slate-700 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
