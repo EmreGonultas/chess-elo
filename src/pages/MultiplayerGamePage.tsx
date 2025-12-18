@@ -157,8 +157,10 @@ export default function MultiplayerGamePage() {
         };
     }, [socket, connected, gameState, navigate, chess]);
 
-    // Client-side timer display - only for visual countdown
-    // Server is authoritative for time
+    // DISABLED: Client-side timer causes desync issues
+    // Server is authoritative for time and sends updates on every move
+    // Visual countdown happens server-side via getTimeState()
+    /*
     useEffect(() => {
         if (gameEnded || !timeControl) return;
 
@@ -187,6 +189,7 @@ export default function MultiplayerGamePage() {
 
         return () => clearInterval(interval);
     }, [turn, gameEnded, timeControl]);
+    */
 
     const handleMove = (from: string, to: string, promotion?: string) => {
         if (!socket || !gameState || gameEnded) return;
