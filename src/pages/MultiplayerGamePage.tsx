@@ -157,10 +157,8 @@ export default function MultiplayerGamePage() {
         };
     }, [socket, connected, gameState, navigate, chess]);
 
-    // DISABLED: Client-side timer causes desync issues
-    // Server is authoritative for time and sends updates on every move
-    // Visual countdown happens server-side via getTimeState()
-    /*
+    // Client-side timer for real-time visual countdown
+    // Server time updates on every move keep it synchronized
     useEffect(() => {
         if (gameEnded || !timeControl) return;
 
@@ -169,18 +167,16 @@ export default function MultiplayerGamePage() {
             if (turn === 'w') {
                 setWhiteTime(prev => {
                     const newTime = Math.max(0, prev - 1000);
-                    // Check for timeout
                     if (newTime === 0 && prev > 0) {
-                        console.log('White ran out of time!');
+                        console.log('⏰ White time expired!');
                     }
                     return newTime;
                 });
             } else {
                 setBlackTime(prev => {
                     const newTime = Math.max(0, prev - 1000);
-                    // Check for timeout
                     if (newTime === 0 && prev > 0) {
-                        console.log('Black ran out of time!');
+                        console.log('⏰ Black time expired!');
                     }
                     return newTime;
                 });
@@ -189,7 +185,6 @@ export default function MultiplayerGamePage() {
 
         return () => clearInterval(interval);
     }, [turn, gameEnded, timeControl]);
-    */
 
     const handleMove = (from: string, to: string, promotion?: string) => {
         if (!socket || !gameState || gameEnded) return;
