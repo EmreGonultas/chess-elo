@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  elo       Int      @default(800)
+  createdAt DateTime @default(now())
+
+  matchesAsWhite Match[] @relation("WhitePlayer")
+  matchesAsBlack Match[] @relation("BlackPlayer")
+  matchesWon     Match[] @relation("MatchWinner")
+}
+
+model Match {
+  id        String   @id @default(uuid())
+  whiteId   String
+  blackId   String
+  winnerId  String?
+  
+  moves     String   // Store moves as JSON string
+  pgn       String?  // Optional: Store PGN
+  status    String   // 'active', 'completed', 'draw'
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  white     User     @relation("WhitePlayer", fields: [whiteId], references: [id])
+  black     User     @relation("BlackPlayer", fields: [blackId], references: [id])
+  winner    User?    @relation("MatchWinner", fields: [winnerId], references: [id])
+}
