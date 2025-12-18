@@ -421,9 +421,23 @@ This project demonstrates proficiency in:
 
 ## 📝 License
 
-This is a personal portfolio project created to demonstrate full-stack development skills, real-time communication, and modern web technologies. Built as a showcase for career opportunities and continuous learning.
+**Educational Use Only - Non-Commercial License**
 
-**MIT License** - Free to use for educational and personal purposes.
+This project is a personal portfolio piece created to demonstrate full-stack development skills. 
+
+**Permissions:**
+- ✅ View and study the code for educational purposes
+- ✅ Fork and modify for learning purposes
+- ✅ Use as inspiration for your own projects
+
+**Restrictions:**
+- ❌ Commercial use is **NOT permitted**
+- ❌ Monetization is **NOT allowed**
+- ❌ Redistribution for profit is **prohibited**
+
+This code is provided as-is for educational and learning purposes only. If you wish to use this project commercially, please contact the author.
+
+© 2024 Emre Gönüldaş. All rights reserved for commercial use.
 
 ---
 
