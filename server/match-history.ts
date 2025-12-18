@@ -84,9 +84,15 @@ router.get('/history', async (req, res) => {
                 result = 'loss';
             }
 
-            // Parse date - handle both SQLite and ISO formats
+
+            // Parse date - handle both SQLite and PostgreSQL formats
             let dateStr = match.created_at;
-            if (dateStr && !dateStr.includes('T')) {
+
+            // PostgreSQL returns Date object, SQLite returns string
+            if (dateStr instanceof Date) {
+                dateStr = dateStr.toISOString();
+            } else if (typeof dateStr === 'string' && !dateStr.includes('T')) {
+                // SQLite format - convert to ISO
                 dateStr = dateStr.replace(' ', 'T') + 'Z';
             }
 
