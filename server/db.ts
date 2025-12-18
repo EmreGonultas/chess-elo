@@ -145,7 +145,8 @@ function initSqliteSchema() {
 // Unified query interface
 export const query = async (sql: string, params: any[] = []): Promise<any[]> => {
     if (isProduction && pgPool) {
-        const result = await pgPool.query(sql, params);
+        const pgSql = convertToPostgresql(sql);
+        const result = await pgPool.query(pgSql, params);
         return result.rows;
     } else if (sqliteDb) {
         return new Promise((resolve, reject) => {
@@ -158,9 +159,16 @@ export const query = async (sql: string, params: any[] = []): Promise<any[]> => 
     throw new Error('No database connection available');
 };
 
+// Convert SQLite ? placeholders to PostgreSQL $1, $2, $3...
+const convertToPostgresql = (sql: string): string => {
+    let index = 0;
+    return sql.replace(/\?/g, () => `$${++index}`);
+};
+
 export const run = async (sql: string, params: any[] = []): Promise<any> => {
     if (isProduction && pgPool) {
-        const result = await pgPool.query(sql, params);
+        const pgSql = convertToPostgresql(sql);
+        const result = await pgPool.query(pgSql, params);
         return result;
     } else if (sqliteDb) {
         return new Promise((resolve, reject) => {
@@ -175,7 +183,8 @@ export const run = async (sql: string, params: any[] = []): Promise<any> => {
 
 export const get = async (sql: string, params: any[] = []): Promise<any> => {
     if (isProduction && pgPool) {
-        const result = await pgPool.query(sql, params);
+        const pgSql = convertToPostgresql(sql);
+        const result = await pgPool.query(pgSql, params);
         return result.rows[0];
     } else if (sqliteDb) {
         return new Promise((resolve, reject) => {
