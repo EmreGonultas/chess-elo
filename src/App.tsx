@@ -10,6 +10,7 @@ import LeaderboardPage from './pages/LeaderboardPage';
 import LandingPage from './pages/LandingPage';
 import MultiplayerGamePage from './pages/MultiplayerGamePage';
 import SocialPage from './pages/SocialPage';
+import AdminPage from './pages/AdminPage';
 import Navbar from './components/Navbar';
 import { useEffect } from 'react';
 
@@ -55,6 +56,7 @@ export default function App() {
                 <Route path="/social" element={<SocialPage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/game" element={<MultiplayerGamePage />} />
+                <Route path="/admin" element={<AdminPage />} />
               </Route>
             </Route>
 

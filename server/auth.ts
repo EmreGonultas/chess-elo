@@ -130,4 +130,20 @@ router.post('/update-elo', async (req, res) => {
     }
 });
 
+// Middleware to verify JWT token
+export const authenticateToken = (req: any, res: any, next: any) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: 'No token' });
+
+    const token = authHeader.split(' ')[1];
+    try {
+        const payload = jwt.verify(token, JWT_SECRET) as any;
+        req.user = payload; // Attach user to request
+        next();
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid token' });
+    }
+};
+
 export default router;
+
