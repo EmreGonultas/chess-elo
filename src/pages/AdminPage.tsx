@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
 import axios from 'axios';
 
 interface User {
@@ -27,7 +28,7 @@ export default function AdminPage() {
         try {
             setLoading(true);
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:3000/api/admin/users', {
+            const response = await axios.get(`${API_URL}/api/admin/users`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUsers(response.data);
@@ -48,7 +49,7 @@ export default function AdminPage() {
         try {
             const token = localStorage.getItem('token');
             await axios.post(
-                'http://localhost:3000/api/admin/ban',
+                `${API_URL}/api/admin/ban`,
                 { username },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -64,7 +65,7 @@ export default function AdminPage() {
         try {
             const token = localStorage.getItem('token');
             await axios.post(
-                'http://localhost:3000/api/admin/unban',
+                `${API_URL}/api/admin/unban`,
                 { username },
                 { headers: { Authorization: `Bearer ${token}` } }
             );

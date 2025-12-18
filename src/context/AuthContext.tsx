@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 interface User {
     id: string;
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         try {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            const res = await axios.get('http://192.168.1.18:3000/api/auth/me');
+            const res = await axios.get(`${API_URL}/api/auth/me`);
             setUser(res.data);
             console.log('User data refreshed:', res.data);
         } catch (err) {
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (token) {
                 try {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                    const res = await axios.get('http://192.168.1.18:3000/api/auth/me');
+                    const res = await axios.get(`${API_URL}/api/auth/me`);
                     setUser(res.data);
                 } catch (err) {
                     console.error("Failed to restore session:", err);
