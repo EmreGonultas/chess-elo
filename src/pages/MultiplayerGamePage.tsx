@@ -82,6 +82,9 @@ export default function MultiplayerGamePage() {
     // Track last turn change to prevent timer drift
     const lastTurnChangeRef = useRef<number>(Date.now());
 
+    // Track if timer is synced with server to prevent premature countdown
+    const [timerSynced, setTimerSynced] = useState(true);
+
     // Removed aggressive redirect check - if user navigates here, trust the navigation
     // If gameState is missing, socket listeners will handle it
 
@@ -126,6 +129,8 @@ export default function MultiplayerGamePage() {
                 setBlackTime(data.blackTime);
                 // Reset timer sync timestamp
                 lastTurnChangeRef.current = Date.now();
+                // Mark as synced so client timer can start
+                setTimerSynced(true);
             }
         });
 
@@ -160,7 +165,7 @@ export default function MultiplayerGamePage() {
     // Client-side timer for real-time visual countdown
     // Server time updates on every move keep it synchronized
     useEffect(() => {
-        if (gameEnded || !timeControl) return;
+        if (gameEnded || !timeControl || !timerSynced) return;
 
         const interval = setInterval(() => {
             // Only decrement the time for the player whose turn it is
@@ -184,10 +189,13 @@ export default function MultiplayerGamePage() {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [turn, gameEnded, timeControl]);
+    }, [turn, gameEnded, timeControl, timerSynced]);
 
     const handleMove = (from: string, to: string, promotion?: string) => {
         if (!socket || !gameState || gameEnded) return;
+
+        // Mark timer as unsynced - will resync when server responds
+        setTimerSynced(false);
 
         // Emit move to server
         console.log('Sending move to server:', { gameId: gameState.gameId, from, to, promotion });
