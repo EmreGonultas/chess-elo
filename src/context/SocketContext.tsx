@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from './AuthContext';
 import { ChallengeToast } from '../components/ChallengeToast';
+import { SOCKET_URL } from '../config';
 
 interface SocketContextType {
     socket: Socket | null;
@@ -35,7 +36,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
     useEffect(() => {
         if (isAuthenticated && user) {
             // Connect to Socket.io server
-            const newSocket = io('http://192.168.1.18:3000', {
+            const newSocket = io(SOCKET_URL, {
                 autoConnect: true,
                 reconnection: true,
                 reconnectionDelay: 1000,

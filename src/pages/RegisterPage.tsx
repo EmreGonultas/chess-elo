@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../config';
 import { ArrowLeft } from 'lucide-react';
 
 export default function RegisterPage() {
@@ -25,7 +26,7 @@ export default function RegisterPage() {
 
         try {
             // Attempt real signup
-            await axios.post('http://192.168.1.18:3000/api/auth/signup', { username, password });
+            await axios.post(`${API_URL}/api/auth/signup`, { username, password });
             // On success, redirect to login
             alert('Account created! Please log in.');
             navigate('/login');

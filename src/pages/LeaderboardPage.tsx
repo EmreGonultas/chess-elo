@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { getRankInfo } from '../utils/rank-utils';
 import { Trophy, Medal, Award } from 'lucide-react';
@@ -24,7 +25,7 @@ export default function LeaderboardPage() {
     const fetchLeaderboard = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://192.168.1.18:3000/api/leaderboard/top?limit=100');
+            const response = await axios.get(`${API_URL}/api/leaderboard/top?limit=100`);
             setPlayers(response.data);
             setError('');
         } catch (err) {

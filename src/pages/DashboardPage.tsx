@@ -4,6 +4,7 @@ import { useSocket } from '../context/SocketContext';
 import { getRankInfo } from '../utils/rank-utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 interface Match {
     id: string;
@@ -49,7 +50,7 @@ export default function DashboardPage() {
 
     const fetchMatchHistory = async () => {
         try {
-            const res = await axios.get('http://192.168.1.18:3000/api/matches/history');
+            const res = await axios.get(`${API_URL}/api/matches/history`);
             setMatches(res.data);
         } catch (error) {
             console.error('Failed to fetch match history:', error);

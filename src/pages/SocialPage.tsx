@@ -6,6 +6,7 @@ import { ConfirmModal } from '../components/ConfirmModal';
 import { ChallengeModal, ChallengeReceivedModal } from '../components/ChallengeModals';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 interface Friend {
     id: string;
@@ -161,7 +162,7 @@ export default function SocialPage() {
     const fetchFriends = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://192.168.1.18:3000/api/friends', {
+            const res = await axios.get(`${API_URL}/api/friends`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setFriends(res.data);
@@ -173,7 +174,7 @@ export default function SocialPage() {
     const fetchPendingRequests = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://192.168.1.18:3000/api/friends/pending', {
+            const res = await axios.get(`${API_URL}/api/friends/pending`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setPendingRequests(res.data);
@@ -187,7 +188,7 @@ export default function SocialPage() {
         setLoading(true);
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://192.168.1.18:3000/api/friends/request',
+            await axios.post(`${API_URL}/api/friends/request`,
                 { username: friendUsername },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -203,7 +204,7 @@ export default function SocialPage() {
     const handleAcceptRequest = async (requestId: string) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://192.168.1.18:3000/api/friends/accept',
+            await axios.post(`${API_URL}/api/friends/accept`,
                 { requestId },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -218,7 +219,7 @@ export default function SocialPage() {
     const handleDeclineRequest = async (requestId: string) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://192.168.1.18:3000/api/friends/decline',
+            await axios.post(`${API_URL}/api/friends/decline`,
                 { requestId },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -232,7 +233,7 @@ export default function SocialPage() {
     const handleRemoveFriend = async (friendId: string) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://192.168.1.18:3000/api/friends/${friendId}`, {
+            await axios.delete(`${API_URL}/api/friends/${friendId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchFriends();

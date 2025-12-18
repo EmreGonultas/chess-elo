@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
+import { API_URL } from '../config';
 import { ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
@@ -19,7 +20,7 @@ export default function LoginPage() {
 
         try {
             // Attempt real login
-            const res = await axios.post('http://192.168.1.18:3000/api/auth/login', { username, password });
+            const res = await axios.post(`${API_URL}/api/auth/login`, { username, password });
             login(res.data.token, res.data.user);
             navigate('/ranked');
         } catch (err: any) {
