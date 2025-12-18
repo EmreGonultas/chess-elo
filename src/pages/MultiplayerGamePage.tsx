@@ -118,7 +118,6 @@ export default function MultiplayerGamePage() {
         // Listen for moves
         socket.on('move_made', (data) => {
             console.log('Move made:', data);
-            console.log(`⏱️  Received times: White=${data.whiteTime}ms (${Math.floor(data.whiteTime / 1000)}s), Black=${data.blackTime}ms (${Math.floor(data.blackTime / 1000)}s), Turn=${data.turn}`);
 
             chess.load(data.fen);
             setFen(data.fen);
