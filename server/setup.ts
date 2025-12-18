@@ -1,5 +1,5 @@
 import express from 'express';
-import { query, run } from './db';
+import { get, run } from './db';
 
 const router = express.Router();
 
@@ -24,20 +24,20 @@ router.post('/setup-admin', async (req, res) => {
         );
 
         // Verify update
-        const user = await query('SELECT username, elo, is_admin FROM users WHERE username = ?', [username]);
+        const user = await get('SELECT username, elo, is_admin FROM users WHERE username = ?', [username]);
 
-        if (user.length === 0) {
+        if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
 
         res.json({
             message: 'User promoted successfully!',
-            user: user[0]
+            user: user
         });
 
     } catch (error) {
         console.error('Setup error:', error);
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ error: 'Server error', details: error.message });
     }
 });
 
