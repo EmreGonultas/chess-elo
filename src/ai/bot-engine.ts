@@ -278,11 +278,13 @@ export class BotEngine {
 
     /**
      * Detect tactical patterns
+     * (Currently unused - reserved for future enhancements)
      */
+    /*
     private detectTacticalPatterns(chess: Chess, move: Move): number {
         let bonus = 0;
 
-        // Check bonus
+       // Check bonus
         if (chess.inCheck()) {
             bonus += 40;
         }
@@ -300,11 +302,14 @@ export class BotEngine {
 
         return bonus;
     }
+    */
 
     /**
      * Get pieces attacked from a square
+     * (Currently unused - reserved for future enhancements)
      */
-    private getAttackedPieces(chess: Chess, square: string): string[] {
+    /*
+    private getAttackedPieces(chess: Chess, _square: string): string[] {
         const attacked: string[] = [];
         const board = chess.board();
 
@@ -322,6 +327,7 @@ export class BotEngine {
 
         return attacked;
     }
+    */
 
     /**
      * Evaluate a single move

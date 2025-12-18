@@ -32,6 +32,7 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({ winner, playerColor,
         (playerColor === 'b' && winner === 'black')
     );
 
+    /* Unused color helpers - reserved for future styling enhancements
     const getBorderColor = () => {
         if (winner === 'draw') return 'border-gray-400';
         return playerWon ? 'border-green-500' : 'border-red-500';
@@ -46,6 +47,7 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({ winner, playerColor,
         if (winner === 'draw') return 'text-gray-400';
         return playerWon ? 'text-green-400' : 'text-red-400';
     };
+    */
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fadeIn">
