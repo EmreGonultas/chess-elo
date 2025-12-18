@@ -414,13 +414,16 @@ This project demonstrates proficiency in:
 
 **Emre Gönüldaş**
 - GitHub: [@EmreGonultas](https://github.com/EmreGonultas)
-- School Project: Computer Science
+- Education: Industrial Engineering, Medeniyet Üniversitesi, İstanbul, Türkiye
+- Portfolio Project: Full-stack development showcase
 
 ---
 
 ## 📝 License
 
-This project is created for educational purposes as part of a school assignment.
+This is a personal portfolio project created to demonstrate full-stack development skills, real-time communication, and modern web technologies. Built as a showcase for career opportunities and continuous learning.
+
+**MIT License** - Free to use for educational and personal purposes.
 
 ---
 
