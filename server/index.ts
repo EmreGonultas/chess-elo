@@ -8,6 +8,7 @@ import leaderboardRoutes from './leaderboard';
 import matchRoutes from './match';
 import matchHistoryRoutes from './match-history';
 import friendsRoutes from './friends';
+import adminRoutes from './admin';
 import { setupSocketHandlers } from './socket-handlers';
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/match', matchRoutes);
 app.use('/api/matches', matchHistoryRoutes);
 app.use('/api/friends', friendsRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Basic health check
 app.get('/', (req, res) => {

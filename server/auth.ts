@@ -61,9 +61,14 @@ router.post('/login', async (req, res) => {
         }
 
         // Find user
-        const user = await get('SELECT * FROM users WHERE username = ?', [username]) as UserRow;
+        const user = await get('SELECT * FROM users WHERE username = ?', [username]) as any;
         if (!user) {
             return res.status(400).json({ error: 'Invalid credentials' });
+        }
+
+        // Check if user is banned
+        if (user.is_banned === 1) {
+            return res.status(403).json({ error: 'This account has been banned' });
         }
 
         // Verify password
