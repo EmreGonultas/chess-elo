@@ -151,15 +151,31 @@ export default function MultiplayerGamePage() {
         };
     }, [socket, connected, gameState, navigate, chess]);
 
-    // Countdown timer - tick every second for the active player
+    // Client-side timer display - only for visual countdown
+    // Server is authoritative for time
     useEffect(() => {
         if (gameEnded || !timeControl) return;
 
         const interval = setInterval(() => {
+            // Only decrement the time for the player whose turn it is
             if (turn === 'w') {
-                setWhiteTime(prev => Math.max(0, prev - 1000));
+                setWhiteTime(prev => {
+                    const newTime = Math.max(0, prev - 1000);
+                    // Check for timeout
+                    if (newTime === 0 && prev > 0) {
+                        console.log('White ran out of time!');
+                    }
+                    return newTime;
+                });
             } else {
-                setBlackTime(prev => Math.max(0, prev - 1000));
+                setBlackTime(prev => {
+                    const newTime = Math.max(0, prev - 1000);
+                    // Check for timeout
+                    if (newTime === 0 && prev > 0) {
+                        console.log('Black ran out of time!');
+                    }
+                    return newTime;
+                });
             }
         }, 1000);
 
