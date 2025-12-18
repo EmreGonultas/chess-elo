@@ -30,7 +30,7 @@ router.post('/ban', authenticateToken, requireAdmin, async (req, res) => {
             return res.status(400).json({ error: 'Username required' });
         }
 
-        await run('UPDATE users SET is_banned = 1 WHERE username = ?', [username]);
+        await run('UPDATE users SET is_banned = ? WHERE username = ?', [true, username]);
 
         res.json({ success: true, message: `${username} has been banned` });
     } catch (error) {
@@ -48,7 +48,7 @@ router.post('/unban', authenticateToken, requireAdmin, async (req, res) => {
             return res.status(400).json({ error: 'Username required' });
         }
 
-        await run('UPDATE users SET is_banned = 0 WHERE username = ?', [username]);
+        await run('UPDATE users SET is_banned = ? WHERE username = ?', [false, username]);
 
         res.json({ success: true, message: `${username} has been unbanned` });
     } catch (error) {
