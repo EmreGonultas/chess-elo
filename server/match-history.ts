@@ -63,7 +63,7 @@ router.get('/history', async (req, res) => {
             let myChange: number | null = null;
 
             try {
-                const matchData = JSON.parse(match.moves);
+                const matchData = JSON.parse(match.pgn);
                 if (matchData.whiteElo && matchData.blackElo) {
                     opponentElo = isWhite ? matchData.blackElo : matchData.whiteElo;
                 }
