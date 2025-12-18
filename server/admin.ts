@@ -10,7 +10,7 @@ const requireAdmin = async (req: any, res: any, next: any) => {
         const userId = req.user.id;
         const user = await query('SELECT is_admin FROM users WHERE id = ?', [userId]);
 
-        if (!user || !user[0] || user[0].is_admin !== 1) {
+        if (!user || !user[0] || !user[0].is_admin) {
             return res.status(403).json({ error: 'Admin access required' });
         }
 
