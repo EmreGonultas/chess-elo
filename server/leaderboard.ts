@@ -16,14 +16,16 @@ router.get('/top', async (req, res) => {
         const limit = parseInt(req.query.limit as string) || 100;
 
         // Exclude test accounts from leaderboard
-        const excludedUsernames = ['anan', 'anan3', 'anan4'];
-        const placeholders = excludedUsernames.map(() => '?').join(',');
+        // const excludedUsernames = ['anan', 'anan3', 'anan4'];
+        // const placeholders = excludedUsernames.map(() => '?').join(',');
 
         const players = await query(
-            `SELECT id, username, elo FROM users 
-             WHERE username NOT IN (${placeholders}) 
-             ORDER BY elo DESC LIMIT ?`,
-            [...excludedUsernames, limit]
+            `SELECT id, username, elo
+             FROM users
+             WHERE is_banned = FALSE
+             ORDER BY elo DESC
+             LIMIT ?`,
+            [limit]
         ) as LeaderboardEntry[];
 
         // Add rank numbers

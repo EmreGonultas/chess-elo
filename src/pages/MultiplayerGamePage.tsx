@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useSocket } from '../context/SocketContext';
 import { MultiplayerChessBoard } from '../components/MultiplayerChessBoard';
 import { Chess } from 'chess.js';
+import { playTurnSound } from '../utils/audio';
 
 interface GameState {
     gameId: string;
@@ -132,6 +133,17 @@ export default function MultiplayerGamePage() {
                 lastTurnChangeRef.current = Date.now();
                 // Mark as synced so client timer can start
                 setTimerSynced(true);
+            }
+
+            // Play sound if it's now my turn
+            if (gameState) {
+                const isMyTurnNow =
+                    (gameState.playerColor === 'white' && data.turn === 'w') ||
+                    (gameState.playerColor === 'black' && data.turn === 'b');
+
+                if (isMyTurnNow) {
+                    playTurnSound();
+                }
             }
         });
 
