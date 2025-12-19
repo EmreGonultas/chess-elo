@@ -7,7 +7,7 @@ A full-stack, real-time multiplayer chess application with ELO rating system, fr
 ---
 
 ## 📋 Table of Contents
-- [Features](##features)
+- [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Architecture](#architecture)
 - [Local Development Setup](#local-development-setup)
